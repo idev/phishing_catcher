@@ -1,2 +1,2 @@
 *.pyc
-suspicious_domains.log
+suspicious_domains*.log
