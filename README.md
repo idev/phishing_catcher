@@ -1,3 +1,9 @@
+# Customized Phishing Catcher
+Merge of the fork from https://github.com/stoerchl/phishing_catcher and https://github.com/x0rz/phishing_catcher. The goal is to provide a script which can be run via cronjob once a day and is checking certstream domains and newly registered domains.
+
+Todo is also to provide a log which can be imported into splunk (key/value).
+Also a todo is to utilize dnstwist, the intention is to have a special eye on phishing lookalike domains of a corporation / enterprise.
+
 # Phishing Catcher
 
 Catch possible phishing domains in near real time by looking for suspicious TLS certificate issuances reported to the [Certificate Transparency Log (CTL)](https://www.certificate-transparency.org/) via the [CertStream](https://certstream.calidog.io/) API. "Suspicious" issuances are those whose domain name scores beyond a certain threshold based on a configuration file.
