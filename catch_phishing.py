@@ -111,6 +111,17 @@ def callback(message, context):
 
         for domain in all_domains:
             pbar.update(1)
+
+            # First check if domain should be ignored by being in the whitelist
+            inWhitelist = False
+            for w in suspicious['whitelist']:
+                if domain.endswith(w):
+                    inWhitelist = True
+                    break
+            # If domain in whitelist, skip this iteration of the for loop and continue to next domain
+            if inWhitelist:
+                continue
+            # Otherwise, continue
             score = score_domain(domain.lower())
 
             # If issued from a free CA = more suspicious
@@ -145,6 +156,9 @@ if __name__ == '__main__':
 
     with open(external_yaml, 'r') as f:
         external = yaml.safe_load(f)
+
+    if external['whitelist'] is not None:
+        suspicious['whitelist'].update(external['whitelist'])
 
     if external['override_suspicious.yaml'] is True:
         suspicious = external

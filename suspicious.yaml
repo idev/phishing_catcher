@@ -133,6 +133,15 @@ keywords:
     # FR specific
     'suivi': 50
     'laposte': 50
+    
+# Ignore these domains
+whitelist:
+    # 'netflix.com':
+    # 'skype.com':
+    # 'github.com':
+    # 'onedrive.com':
+    # 'dropbox.com':
+    '.microsoft.com':
 
 tlds:
     '.ga':
