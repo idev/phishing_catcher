@@ -1822,11 +1822,12 @@ confusables = {
     u'\u2796': '-',
     u'\u2CBA': '-'
 }
-#FIXME: encode / decode seems to have a problem with leading dots
+
 def unconfuse(domain):
     if domain.startswith('xn--') or domain.find('xn--'):
         try:
             domain = domain.strip(".").encode('idna').decode('idna')
+            print(domain)
         except UnicodeError as e:
             print ("UnicodeError with domain: " + domain)
             pass
@@ -1838,3 +1839,6 @@ def unconfuse(domain):
             unconfused += domain[i]
 
     return unconfused
+
+unconfuse("te'st.com")
+unconfuse("alloccasioncandles.com")
