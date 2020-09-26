@@ -134,8 +134,9 @@ def score_domain(domain):
         score += domain.count('.') * 3
 
     #testing for dnstwist domain - hit is critical
-    if domain in dnstwist_domains:
-        score += 50
+    if dnstwist_domains:
+        if domain in dnstwist_domains:
+            score += 50
 
     return score
 
@@ -196,17 +197,19 @@ def score_evaluate(score, domain):
 
 def load_dnstwist_csv():
     #dnstwist https://github.com/elceef/dnstwist lookalike domains
-    with open((dnstwist_csv), 'r') as f:
-        reader = csv.DictReader(f)
-        data = {}
-        for row in reader:
-            for header, value in row.items():
-                try:
-                    data[header].append(value)
-                except KeyError:
-                    data[header] = [value]
-
-    return data['domain-name']
+    if os.path.isfile(dnstwist_csv):
+        with open((dnstwist_csv), 'r') as f:
+            reader = csv.DictReader(f)
+            data = {}
+            for row in reader:
+                for header, value in row.items():
+                    try:
+                        data[header].append(value)
+                    except KeyError:
+                        data[header] = [value]
+            return data['domain-name']
+    else:
+        pass
 
 
 if __name__ == '__main__':
