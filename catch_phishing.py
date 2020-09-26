@@ -22,6 +22,7 @@ import datetime
 import base64
 import urllib
 import zipfile
+import csv
 from Levenshtein import distance
 from termcolor import colored, cprint
 from tld import get_tld
@@ -35,6 +36,8 @@ log_suspicious = os.path.dirname(os.path.realpath(__file__))+'/suspicious_domain
 suspicious_yaml = os.path.dirname(os.path.realpath(__file__))+'/suspicious.yaml'
 
 external_yaml = os.path.dirname(os.path.realpath(__file__))+'/external.yaml'
+
+dnstwist_csv = os.path.dirname(os.path.realpath(__file__))+'/dnstwist.csv'
 
 # Progress bars
 pbar1 = tqdm.tqdm(desc='certificate_update', unit=' cert', position=0)
@@ -130,6 +133,10 @@ def score_domain(domain):
     if domain.count('.') >= 3:
         score += domain.count('.') * 3
 
+    #testing for dnstwist domain - hit is critical
+    if domain in dnstwist_domains:
+        score += 50
+
     return score
 
 
@@ -187,6 +194,19 @@ def score_evaluate(score, domain):
         with open(log_suspicious, 'a') as f:
             f.write("{}\n".format("domain="+domain+","+"score="+str(score)))
 
+def load_dnstwist_csv():
+    #dnstwist https://github.com/elceef/dnstwist lookalike domains
+    with open((dnstwist_csv), 'r') as f:
+        reader = csv.DictReader(f)
+        data = {}
+        for row in reader:
+            for header, value in row.items():
+                try:
+                    data[header].append(value)
+                except KeyError:
+                    data[header] = [value]
+
+    return data['domain-name']
 
 
 if __name__ == '__main__':
@@ -208,6 +228,7 @@ if __name__ == '__main__':
         if external['tlds'] is not None:
             suspicious['tlds'].update(external['tlds'])
 
+    dnstwist_domains = load_dnstwist_csv()
 #TODO: main purpose is to run via a cronjob - so a args should be trigger cert or domain_worker
 #TODO: utilize dnstwist for possible corporate phishing domains
 #TODO: do a separate log for cert / domain log

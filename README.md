@@ -1,8 +1,10 @@
 # Customized Phishing Catcher
 Merge of the fork from https://github.com/stoerchl/phishing_catcher and https://github.com/x0rz/phishing_catcher. The goal is to provide a script which can be run via cronjob once a day and is checking certstream domains and newly registered domains.
 
-Todo is also to provide a log which can be imported into splunk (key/value).
-Also a todo is to utilize dnstwist, the intention is to have a special eye on phishing lookalike domains of a corporation / enterprise.
+For corporate users I added a dnstwist lookup to rise the score if a lookalike domain is found.
+Simple generate a dnstwist csv with https://github.com/elceef/dnstwist and dnstwist --format csv yourdomain.com > dnstwist.csv and place it in the directory.
+
+Todo is to provide a log which can be imported into splunk (key/value).
 
 # Phishing Catcher
 
